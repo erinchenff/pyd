@@ -7,7 +7,7 @@ DEV:
   orderdetail: 'CM1909121313579018714717'
 # PRO生产环境
 PRO:
-  baseURL: 'http://pp-m.njfae.com.cn'
+  baseURL: 'https://m.51paiyide.com'
   orderdetail: 'CM1909111350000156665421'
 # 兼容浏览器 目前仅调试Chrome,
 browser: Chrome
