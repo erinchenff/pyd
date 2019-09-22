@@ -1,0 +1,35 @@
+# 环境
+ENV: DEV
+#  PRO
+# DEV测试环境
+DEV:
+  baseURL: 'http://pp-m.njfae.com.cn'
+  orderdetail: 'CM1909121313579018714717'
+# PRO生产环境
+PRO:
+  baseURL: 'http://pp-m.njfae.com.cn'
+  orderdetail: 'CM1909111350000156665421'
+# 兼容浏览器 目前仅调试Chrome,
+browser: Chrome
+#  Firefox
+# 集合URL
+set_url: '/dist/#/orderdetail?sn_local.yaml=${orderdetail}&status=live'
+# 登陆账号密码 以后拆出来，gitignore
+login_iphone:  '13521883086'
+login_password: 'a111111'
+# 钉钉
+access_token: 'test'
+# 输入的竞买额
+input_price: '0.01'
+# 下一场间隔时间，单位秒
+auction_interval_time: 120
+# 购买后清场时间，单位秒 + 60秒先sleep的时间
+auction_clear_time: 400
+
+# 时间样式
+ISOTIMEFORMAT: '%Y%m%d%H%M%S'
+
+log:
+  formatter: "{timestamp:%(asctime)s,name:%(name)s,level:%(levelname)s, message: %(message)s,filename:[%(filename)s,lineno:%(lineno)s]}"
+  file_handler: INFO
+  console_handler: DEBUG
