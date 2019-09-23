@@ -16,19 +16,18 @@ class Client():
         elif browser == "Chrome":
             # 初始化driver
             chrome_options = Options()
-            chrome_options.add_argument('disable-infobars') #设置不弹出自动化提示
-            # chrome_options.add_argument('--headless') #后台运行
-            # chrome_options.add_argument('--disable-gpu')
-            # chrome_options.add_argument('--no-sandbox')
-            # chrome_options.add_argument('--window-size=1200,600')
-            # driver = webdriver.Chrome(chrome_options=chrome_options)
+            # chrome_options.add_argument('disable-infobars') # 设置不弹出自动化提示
+            chrome_options.add_argument('--headless') # 后台运行
+            chrome_options.add_argument('--disable-gpu') # 谷歌文档提到需要加上这个属性来规避bug
+            chrome_options.add_argument('--no-sandbox') # 解决DevToolsActivePort文件不存在的报错
+            chrome_options.add_argument('window-size=1397x877')  # 指定浏览器分辨率
             cls.driver = webdriver.Chrome(config.driver_dir, options=chrome_options)
         elif browser == "IE":
             cls.driver = webdriver.Ie()
-        # self.driver.set_window_size(1920, 1080)  # 分辨率
-        # self.driver.maximize_window()#最大化
+
         cls.driver.get(baseURL)
         cls.driver.implicitly_wait(10)
+
         return cls.driver
 
 

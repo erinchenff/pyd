@@ -41,7 +41,9 @@ class AuctionDetailPage(BasePage):
         if value:
             logg.info('已成交!!!')
         else:
-            formatter = "购买成功后，等待 %s 秒后，未成交" % cf.auction_clear_time  # 报警格式
+            formatter = "自动化测试用例执行：购买成功后，等待 %s 秒后，未成交" % (cf.auction_clear_time)
+            # todo 报警的具体格式
+            # todo 测试环境不报警
             res = xiao_ding(formatter)
             logg.info("钉钉报警状态：%s, 报警内容：%s" % (res,formatter))
 

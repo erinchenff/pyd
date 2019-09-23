@@ -3,3 +3,4 @@
 *.log
 *.png
 *_local.yml
+__pycache__

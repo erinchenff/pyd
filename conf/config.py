@@ -8,7 +8,8 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目
 
 data_dir = os.path.join(base_dir, "data")  # data文件夹路径
 conf_dir = os.path.join(base_dir, "conf")
-cf_file = os.path.join(conf_dir, "config_local.yml")  # 环境配置文件路径
+cf_file = os.path.join(conf_dir, "config.yml")  # 环境配置文件路径
+cf_file_local = os.path.join(conf_dir, "config_local.yml")  # 环境配置文件路径
 
 # 日志路径
 output_dir = os.path.join(base_dir, "output")
@@ -27,9 +28,13 @@ driver_dir = os.path.join(base_dir, "driver/chromedriver")
 
 class Config():
     def __init__(self):
-        print(sys.path)
         with open(cf_file, encoding='utf8') as stream:
-            self.configs = yaml.load(stream, Loader=yaml.FullLoader)
+            configs = yaml.load(stream, Loader=yaml.FullLoader)
+
+        with open(cf_file_local,encoding='utf8') as stream_local:
+            configs_update = yaml.load(stream_local, Loader=yaml.FullLoader)
+
+        self.configs = {**configs, **configs_update}
 
     @property
     def env(self):
@@ -45,7 +50,7 @@ class Config():
         首页
         :return:
         '''
-        return self.configs[self.env]["baseURL"]
+        return self.get_section_option(self.env,"baseURL")
 
     @property
     def login_name_password(self):
@@ -53,7 +58,7 @@ class Config():
         登陆账号密码
         :return:
         '''
-        return (self.configs.get('login_iphone'), self.configs.get('login_password'))
+        return (self.get_section_option(self.env,"login_iphone"), self.get_section_option(self.env,"login_password"))
 
     @property
     def input_price(self):
@@ -91,18 +96,19 @@ class Config():
         return self.baseURL + set_relative_url
 
     @property
-    def xiao_ding(self):
-        return (self.configs.get('auction_clear_time'))
+    def access_token(self):
+        return (self.configs.get('access_token'))
 
 
-    def get_value(self, section, option):
+    def get_section_option(self, section, option):
         return self.configs.get(section).get(option)
 
 
 cf = Config()
+print("当前脚本运行环境为：%s" % cf.env)
 
 if __name__ == '__main__':
-    # print(cf.get_value('log', "formatter"))
+    print(cf.login_name_password)
     print(cf.set_url)
 
     # 210510001202620171205134798225,0.01,0.0002,签署人（测试）新区开发两地公司

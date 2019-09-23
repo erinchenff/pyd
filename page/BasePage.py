@@ -82,6 +82,26 @@ class BasePage():
         except (TimeoutException, NoSuchElementException) as e:
             self.get_windows_img()
 
+    def check_countdown_before(self,):
+        '''
+        // //div[@aria-labelledby="本场竞拍已结束，请等待下一场"]
+        # //div[@role="dialog"]
+        您将出价0.01元，竞拍0.01元收益权的票据
+
+        :return:
+        '''
+        pass
+
+    def check_van_dialo(self,*loc):
+        try:
+            webelement = self.find_element(*loc)
+            return webelement
+        except:
+            logger.info("There's no van_dialog before click %s " % loc)
+            return False
+
+
+
     def click_element(self, *loc):
         """
         重封装的click方法，将寻找和点击封装到一起，适用于点击次数不多的元素

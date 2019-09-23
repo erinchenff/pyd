@@ -10,9 +10,9 @@ logg = get_logger(__name__)
 
 
 class OrderDealPage(BasePage):
-    # todo  本场竞拍已结束，请等待下一场
-    # todo  超出剩余可拍票面金额
-    # todo  金额不足，需要充值
+    # todo  有弹窗，需重新进入集合购买页面 -- 本场竞拍已结束，请等待下一场
+    # todo  有弹窗，超出剩余可拍票面金额  -- 无法继续
+    # todo  金额不足，需要充值 -- 充值
 
     # 竞买额 输入
     _input_tag = (By.TAG_NAME, "input")
