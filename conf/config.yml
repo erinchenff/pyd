@@ -19,7 +19,7 @@ PRO:
 browser: Chrome
 #  Firefox
 # 集合URL
-set_url: '/dist/#/orderdetail?sn=${orderdetail}&status=live'
+set_url: '/orderdetail?sn=${orderdetail}&status=live'
 
 # 钉钉
 access_token: 'test'

@@ -105,13 +105,12 @@ class Config():
 
 
 cf = Config()
-print("当前脚本运行环境为：%s" % cf.env)
+
 
 if __name__ == '__main__':
     print(cf.login_name_password)
     print(cf.set_url)
 
-    # 210510001202620171205134798225,0.01,0.0002,签署人（测试）新区开发两地公司
-    # for i in range(100):
-    #     str_my ="21051012211202990171205134798225" + str(i) + ",0.01,0.0002,签署人（测试）新区开发两地公司"
-    #     print(str_my)
+    for i in range(1000):
+        str_my ="21051012211202990171205134798229" + str(i) + ",0.01,0.0002,签署人（测试）新区开发两地公司"
+        print(str_my)

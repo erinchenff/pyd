@@ -10,8 +10,6 @@ logg = get_logger(__name__)
 
 
 class OrderDealPage(BasePage):
-    # todo  有弹窗，需重新进入集合购买页面 -- 本场竞拍已结束，请等待下一场
-    # todo  有弹窗，超出剩余可拍票面金额  -- 无法继续
     # todo  金额不足，需要充值 -- 充值
 
     # 竞买额 输入
@@ -26,21 +24,33 @@ class OrderDealPage(BasePage):
     _dialog_confirm = (By.CLASS_NAME, "van-dialog__confirm")
 
     def gotoAuctionDetail(self, price):
-        # 竞买额 输入
-        self.clear_and_sendkeys(price, *self._input_tag)
-        # 同意服务协议
-        self.click_element(*self._check_selected)
+
+        if not self.check_van_dialo(): # 无弹窗
+            # 竞买额 输入
+            self.clear_and_sendkeys(price, *self._input_tag)
+            logg.info("竞买额 输入")
+            # 同意服务协议
+            self.click_element(*self._check_selected)
+            logg.info("同意服务协议")
+
+
+
         # 确认竞拍
-        time.sleep(2)  # 需要sleep两秒，否则"确认竞拍"后，会弹出"超出剩余可拍票面金额"
-        self.click_element(*self._deal_submit)
+        time.sleep(2)  # 需要sleep两秒，否则"确认竞拍"后，会弹出"超出剩余可拍票面金额"  这边若有弹框呢？
+        if not self.check_van_dialo(): # 无弹窗
+            self.click_element(*self._deal_submit)
+            logg.info("无弹窗，点击购买")
+
+
 
         # 弹窗确认
         message = self.find_element(*self._dialog_message)
 
         logg.info("message: %s" % message.text)  # 会获取不到text,可忽略
         confirm = self.find_element(*self._dialog_confirm)
-        logg.info("confirm.text: %s" % confirm.text)
+        logg.info("确认购买弹窗的confirm.text内容是: %s" % confirm.text)
         # 确认购买
         confirm.click()
+        logg.info("点击确认购买")
 
         return AuctionDetailPage()

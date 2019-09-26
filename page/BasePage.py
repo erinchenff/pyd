@@ -1,4 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -10,7 +11,15 @@ from conf import config
 import sys
 import time
 
-logger = get_logger("BasePage")
+logg = get_logger(__name__)
+
+
+class DialogException(BaseException):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
 
 
 class BasePage():
@@ -37,13 +46,13 @@ class BasePage():
         try:
             webelement = WebDriverWait(self.driver, timeout).until(
                 EC.text_to_be_present_in_element(locator, text))
-            logger.info('获取{}元素成功'.format(locator))
+            logg.info('获取{}元素成功'.format(locator))
             return webelement
         except:
-            logger.error("相对时间内没有定位到{}元素".format(locator))
+            logg.error("{}秒内没有定位到{}元素".format(timeout, locator))
             self.get_windows_img()
 
-    def get_title_contains(self, text, timeout=20) -> WebElement:
+    def get_title_contains(self, text, timeout=2) -> WebElement:
         '''
 
         :param text:
@@ -54,21 +63,22 @@ class BasePage():
         try:
             res = WebDriverWait(self.driver, timeout).until(
                 EC.title_contains(text))
-            logger.info('跳转{}页面成功'.format(text))
+            logg.info('跳转{}页面成功'.format(text))
             return res
         except:
-            logger.error("相对时间内没有跳转到{}页面".format(text))
+            logg.error("{}秒内没有跳转到{}页面".format(timeout, text))
             self.get_windows_img()
 
     def get_windows_img(self):
         try:
             # 寻找失败时自动截图至指定目录sreenshot，截图名称为调用方法名（测试用例名）+ 时间戳 + png后缀
             file_name = config.screenshot_dir + sys._getframe(1).f_code.co_name + time.strftime('%Y%m%d%H%M%S',
-                                                                                   time.localtime(time.time())) + ".png"
+                                                                                                time.localtime(
+                                                                                                    time.time())) + ".png"
             self.driver.get_screenshot_as_file(file_name)
-            logger.info('Had take screenshots and save to folder:output/screenshots')
+            logg.info('Had take screenshots and save to folder:output/screenshots')
         except NameError as e:
-            logger.info('Failed to take the screenshots!%s' % e)
+            logg.info('Failed to take the screenshots!%s' % e)
 
     def find_element(self, *loc):
         """
@@ -80,27 +90,24 @@ class BasePage():
             webelement = WebDriverWait(self.driver, 5).until(lambda x: x.find_element(*loc))
             return webelement
         except (TimeoutException, NoSuchElementException) as e:
+            logg.info('查找元素时，TimeoutException, NoSuchElementException')
             self.get_windows_img()
 
-    def check_countdown_before(self,):
-        '''
-        // //div[@aria-labelledby="本场竞拍已结束，请等待下一场"]
-        # //div[@role="dialog"]
-        您将出价0.01元，竞拍0.01元收益权的票据
-
-        :return:
-        '''
-        pass
-
-    def check_van_dialo(self,*loc):
+    def check_van_dialo(self):
         try:
-            webelement = self.find_element(*loc)
-            return webelement
-        except:
-            logger.info("There's no van_dialog before click %s " % loc)
+            dialog_strs = ["本场竞拍已结束，请等待下一场\n确认",
+                           "超出剩余可拍票面金额\n",
+                           ]
+            webelement = self.driver.find_element_by_xpath('//div[@role="dialog"]')
+            logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0]))
+            if webelement.text in dialog_strs:
+                raise DialogException(webelement.text)
+            else:
+                logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text))
+                self.get_windows_img()
+        except NoSuchElementException:
+            logg.info("当前页面无弹窗")
             return False
-
-
 
     def click_element(self, *loc):
         """
@@ -112,7 +119,7 @@ class BasePage():
             webelement = self.find_element(*loc)
             webelement.click()
         except (TimeoutException, NoSuchElementException) as e:
-            logger.info('Error details :%s' % (e.msg))
+            logg.info('详细错误:%s' % e.msg)
 
     def is_page_has_text(self, text):
         """
@@ -160,8 +167,9 @@ class BasePage():
             webelement.clear()
             webelement.send_keys(sendtexts)
         except (TimeoutException, NoSuchElementException) as e:
-            print('Error details :%s' % (e.msg))
+            logg.info('详细错误 :%s' % e.msg)
 
     @classmethod
     def driver_quit(cls):
+        logg.info('浏览器quit')
         cls.getDriver().quit()

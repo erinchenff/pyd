@@ -46,6 +46,9 @@ def get_logger(logger_name):
     return logger
 
 def xiao_ding(err):
+    # 测试环境不报警
+    if cf.env == "DEV":
+        return
     header = {
         "Content-Type": "application/json"
     }
@@ -60,5 +63,5 @@ def xiao_ding(err):
     my_url = "https://oapi.dingtalk.com/robot/send?access_token=%s" % cf.access_token
 
     send_data = json.dumps(my_data)
-    # res = requests.post(url=my_url, data=send_data, headers=header)
-    # return res
+    res = requests.post(url=my_url, data=send_data, headers=header)
+    return res

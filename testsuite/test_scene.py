@@ -3,8 +3,10 @@ import pytest
 from common import utils
 from common.utils import xiao_ding, get_logger
 from conf.config import cf
+from page.BasePage import DialogException
 
 logg = get_logger(__name__)
+
 
 @pytest.mark.usefixtures('main_page')
 class TestScene():
@@ -25,8 +27,12 @@ class TestScene():
                 .gotoOrderDeal() \
                 .gotoAuctionDetail(cf.input_price) \
                 .test_check_success()
+        except DialogException as e:
+            logg.info("已知弹窗内容: %s" % e)
+
         except Exception as e:
-            formatter1 = '自动化测试用例执行：出现未知异常,请换一种姿势重新起跑，异常信息 %s ' % e
-            formatter = '自动化测试用例执行：出现未知异常,请换一种姿势重新起跑.'
+            main_page.get_windows_img()
+            formatter1 = '自动化测试用例执行：出现未知异常，异常信息 %s ' % e
+            formatter = '自动化测试用例执行：出现未知异常.'
             res = xiao_ding(formatter)
-            logg.info("钉钉报警状态：%s, 报警内容：%s" % (res, formatter1))
+            logg.error("钉钉报警状态：%s, 报警内容：%s" % (res, formatter1))
