@@ -38,7 +38,6 @@ class Config():
                 configs_update = yaml.load(stream_local, Loader=yaml.FullLoader)
 
         self.configs = {**configs, **configs_update}
-        print(self.configs)
 
     @property
     def env(self):
