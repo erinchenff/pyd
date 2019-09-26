@@ -29,6 +29,7 @@ class OrderDealPage(BasePage):
             # 竞买额 输入
             self.clear_and_sendkeys(price, *self._input_tag)
             logg.info("竞买额 输入")
+        if not self.check_van_dialo():  # 无弹窗
             # 同意服务协议
             self.click_element(*self._check_selected)
             logg.info("同意服务协议")
