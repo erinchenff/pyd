@@ -8,8 +8,8 @@ DEV:
   # 订单号
   orderdetail: 'CM1909241523182557217671'
   # 登陆账号密码
-  login_iphone:  'local输入'
-  login_password: 'local输入'
+  login_iphone:  '13521883086'
+  login_password: 'a111111'
 # PRO生产环境
 PRO:
   baseURL: 'local输入'
