@@ -9,7 +9,7 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目
 data_dir = os.path.join(base_dir, "data")  # data文件夹路径
 conf_dir = os.path.join(base_dir, "conf")
 cf_file = os.path.join(conf_dir, "config.yml")  # 环境配置文件路径
-cf_file_local = os.path.join(conf_dir, "config_local.yml")  # 环境配置文件路径
+cf_file_local = os.path.join(conf_dir, "11config_local.yml")  # 环境配置文件路径
 
 # 日志路径
 output_dir = os.path.join(base_dir, "output")
@@ -31,10 +31,14 @@ class Config():
         with open(cf_file, encoding='utf8') as stream:
             configs = yaml.load(stream, Loader=yaml.FullLoader)
 
-        with open(cf_file_local,encoding='utf8') as stream_local:
-            configs_update = yaml.load(stream_local, Loader=yaml.FullLoader)
+        configs_update={}
+
+        if os.path.exists(cf_file_local):
+            with open(cf_file_local,encoding='utf8') as stream_local:
+                configs_update = yaml.load(stream_local, Loader=yaml.FullLoader)
 
         self.configs = {**configs, **configs_update}
+        print(self.configs)
 
     @property
     def env(self):
@@ -111,6 +115,6 @@ if __name__ == '__main__':
     print(cf.login_name_password)
     print(cf.set_url)
 
-    for i in range(1000):
-        str_my ="21051012211202990171205134798229" + str(i) + ",0.01,0.0002,签署人（测试）新区开发两地公司"
-        print(str_my)
+    # for i in range(1000):
+    #     str_my ="21051012211202990171205134798229" + str(i) + ",0.01,0.0002,签署人（测试）新区开发两地公司"
+    #     print(str_my)
