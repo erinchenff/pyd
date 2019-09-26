@@ -22,9 +22,7 @@ class OrderDetailPage(BasePage):
 
         if not self.check_van_dialo():
             # 无弹窗
-            detail_bottombtn = self.find_element(*self._detail_bottombtn_locator)
-            logg.info("拍品详情 页面 竞拍状态: %s" % (detail_bottombtn.text))
-            detail_bottombtn.click()
+            self.click_element(*self._detail_bottombtn_locator)
             logg.info("点击：立即竞拍")
             return OrderDealPage()
 
