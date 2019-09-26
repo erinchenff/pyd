@@ -4,3 +4,4 @@
 *.png
 *_local.yml
 __pycache__
+!.gitkeep
