@@ -37,7 +37,7 @@ class OrderDealPage(BasePage):
 
 
         # 确认竞拍
-        time.sleep(2)  # 需要sleep两秒，否则"确认竞拍"后，会弹出"超出剩余可拍票面金额"  这边若有弹框呢？
+        time.sleep(2)  # 需要sleep两秒，否则"确认竞拍"后，会弹出"超出剩余可拍票面金额"
         if not self.check_van_dialo(): # 无弹窗
             self.click_element(*self._deal_submit)
             logg.info("无弹窗，点击购买")

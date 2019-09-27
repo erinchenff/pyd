@@ -94,12 +94,12 @@ class BasePage():
             self.get_windows_img()
 
     def check_van_dialo(self):
-        try:
+        try: # todo 已知弹框 文本 列表
             dialog_strs = ["本场竞拍已结束，请等待下一场\n确认",
                            "超出剩余可拍票面金额\n",
                            ]
             webelement = self.driver.find_element_by_xpath('//div[@role="dialog"]')
-            logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0]))
+            logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0])) # todo bug 弹窗内容 获取
             if webelement.text in dialog_strs:
                 raise DialogException(webelement.text)
             else:
