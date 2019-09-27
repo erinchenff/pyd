@@ -23,8 +23,6 @@ screenshot_dir = os.path.join(base_dir, "output", "screenshots/")
 
 # case 路径
 case_dir = os.path.join(base_dir, "testcase")
-driver_dir = os.path.join(base_dir, "driver/chromedriver")
-
 
 class Config():
     def __init__(self):

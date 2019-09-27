@@ -24,7 +24,7 @@ class Client():
             chrome_options.add_argument('--disable-gpu')  # 谷歌文档提到需要加上这个属性来规避bug
             chrome_options.add_argument('--no-sandbox')  # 解决DevToolsActivePort文件不存在的报错
             chrome_options.add_argument('window-size=2208x1242')  # 指定浏览器分辨率 ios目前占有率最高分辨率
-            cls.driver = webdriver.Chrome(config.driver_dir, options=chrome_options)
+            cls.driver = webdriver.Chrome(options=chrome_options)
         elif browser == "IE":
             cls.driver = webdriver.Ie()
 
