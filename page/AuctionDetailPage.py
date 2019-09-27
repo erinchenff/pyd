@@ -23,7 +23,7 @@ class AuctionDetailPage(BasePage):
         logg.info('竞拍成功!跳转到我的竞拍页面')
 
         # 我的竞拍
-        self.find_element(*self._success_btns).click()
+        self.find_element(*self._success_btns).click()  # todo bug: 页面可能有蒙层
         # 竞拍中
         self.find_element(*self._myAuction_list).click()
         # 竞拍详情页面
@@ -34,7 +34,7 @@ class AuctionDetailPage(BasePage):
         logg.info('开始匹配竞拍状态,最长等待等待时间为 %s 秒' % (int(cf.auction_clear_time) + refresh_time_interval))
         while value == False and wait_time <= cf.auction_clear_time:
             time.sleep(refresh_time_interval)
-            value = EC.text_to_be_present_in_element(self._auction_sucess, '已成交')(self.driver)  #
+            value = EC.text_to_be_present_in_element(self._auction_sucess, '已成交')(self.driver)  # todo bug:此时截图为灰色，没有此元素
             self.driver.refresh()
             wait_time += refresh_time_interval
             logg.info('每隔%s秒刷新获取竞选状态，已等待%s秒' % (refresh_time_interval, wait_time))
