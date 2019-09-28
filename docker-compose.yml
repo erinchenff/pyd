@@ -1,0 +1,16 @@
+version: "3.0"
+services:
+  spider:
+    image: selenium_python:v1
+    volumes:
+      - .:/code/  # 这里把刚刚的代码映射到这个目录
+    command: ["tail","-f", "/dev/null"]
+    depends_on:
+      - chrome
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    environment:
+      - TZ=Asia/Shanghai
+    shm_size: 2g
