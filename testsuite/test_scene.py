@@ -8,7 +8,6 @@ from page.BasePage import DialogException
 logg = get_logger(__name__)
 
 
-@pytest.mark.usefixtures('main_page')
 class TestScene():
     def test_order_success(self, main_page):
         try:

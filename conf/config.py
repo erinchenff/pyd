@@ -9,7 +9,7 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目
 data_dir = os.path.join(base_dir, "data")  # data文件夹路径
 conf_dir = os.path.join(base_dir, "conf")
 cf_file = os.path.join(conf_dir, "config.yml")  # 环境配置文件路径
-cf_file_local = os.path.join(conf_dir, "11config_local.yml")  # 环境配置文件路径
+cf_file_local = os.path.join(conf_dir, "config_local.yml")  # 环境配置文件路径
 
 # 日志路径
 output_dir = os.path.join(base_dir, "output")
