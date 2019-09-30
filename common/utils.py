@@ -1,10 +1,10 @@
 import json
 import logging
 import logging.handlers
+import os
 
 import requests
-
-from conf.config import cf, logs_log
+import yaml
 
 
 def phone(phone_number):
@@ -17,6 +17,7 @@ def phone(phone_number):
 
 
 def get_logger(logger_name):
+    from conf.config import cf, logs_log
     '''
     日志
     :param logger_name:
@@ -45,7 +46,9 @@ def get_logger(logger_name):
 
     return logger
 
+
 def xiao_ding(err):
+    from conf.config import cf
     # 测试环境不报警
     if cf.env == "DEV":
         return
@@ -65,3 +68,21 @@ def xiao_ding(err):
     send_data = json.dumps(my_data)
     res = requests.post(url=my_url, data=send_data, headers=header)
     return res
+
+
+def get_yaml_data(file):
+    with open(file, encoding='utf8') as stream:
+        data = yaml.load(stream, Loader=yaml.FullLoader)
+    return data
+
+
+def get_update_yaml(cf_default, cf_local):
+    configs_default = get_yaml_data(cf_default)
+
+    configs_local = {}
+
+    if os.path.exists(cf_local):
+        configs_local = get_yaml_data(cf_local)
+
+    return {**configs_default, **configs_local}
+

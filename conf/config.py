@@ -1,10 +1,10 @@
 import os
 import re
-import sys
 import time
-import yaml
 
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目根路径
+import common.utils as uts
+
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目
 
 data_dir = os.path.join(base_dir, "data")  # data文件夹路径
 conf_dir = os.path.join(base_dir, "conf")
@@ -20,22 +20,14 @@ logs_log = os.path.join(output_dir, log_time + ".log")
 # 截图路径
 screenshot_dir = os.path.join(base_dir, "output", "screenshots/")
 
-
 # case 路径
 case_dir = os.path.join(base_dir, "testcase")
 
+
 class Config():
     def __init__(self):
-        with open(cf_file, encoding='utf8') as stream:
-            configs = yaml.load(stream, Loader=yaml.FullLoader)
-
-        configs_update={}
-
-        if os.path.exists(cf_file_local):
-            with open(cf_file_local,encoding='utf8') as stream_local:
-                configs_update = yaml.load(stream_local, Loader=yaml.FullLoader)
-
-        self.configs = {**configs, **configs_update}
+        self.configs = uts.get_update_yaml(cf_file, cf_file_local)
+        print(self.configs)
 
     @property
     def env(self):
@@ -51,7 +43,7 @@ class Config():
         首页
         :return:
         '''
-        return self.get_section_option(self.env,"baseURL")
+        return self.get_section_option(self.env, "baseURL")
 
     @property
     def login_name_password(self):
@@ -59,7 +51,7 @@ class Config():
         登陆账号密码
         :return:
         '''
-        return (self.get_section_option(self.env,"login_iphone"), self.get_section_option(self.env,"login_password"))
+        return (self.get_section_option(self.env, "login_iphone"), self.get_section_option(self.env, "login_password"))
 
     @property
     def input_price(self):
@@ -100,13 +92,11 @@ class Config():
     def access_token(self):
         return (self.configs.get('access_token'))
 
-
     def get_section_option(self, section, option):
         return self.configs.get(section).get(option)
 
 
 cf = Config()
-
 
 if __name__ == '__main__':
     print(cf.login_name_password)
