@@ -27,7 +27,6 @@ case_dir = os.path.join(base_dir, "testcase")
 class Config():
     def __init__(self):
         self.configs = uts.get_update_yaml(cf_file, cf_file_local)
-        print(self.configs)
 
     @property
     def env(self):

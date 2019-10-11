@@ -30,7 +30,7 @@ class AuctionDetailPage(BasePage):
 
         value = False
         wait_time = 0
-        refresh_time_interval = 60
+        refresh_time_interval = 30
         logg.info('开始匹配竞拍状态,最长等待等待时间为 %s 秒' % (int(cf.auction_clear_time) + refresh_time_interval))
         while value == False and wait_time <= cf.auction_clear_time:
             time.sleep(refresh_time_interval)

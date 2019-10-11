@@ -54,4 +54,5 @@ class OrderDealPage(BasePage):
         confirm.click()
         logg.info("点击确认购买")
 
+        # if not self.check_van_dialo():  # 无弹窗 todo  同时点击 确认购买和 已结束的时候，已购买成功。但会跳转首页，中断流程。
         return AuctionDetailPage()
