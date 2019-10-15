@@ -24,8 +24,10 @@ class AuctionDetailPage(BasePage):
 
         # 我的竞拍
         self.find_element(*self._success_btns).click()  # todo bug: 页面可能有蒙层
+        logg.info("我的竞拍")
         # 竞拍中
         self.find_element(*self._myAuction_list).click()
+        logg.info("竞拍中")
         # 竞拍详情页面
 
         value = False

@@ -52,7 +52,7 @@ class BasePage():
             logg.error("{}秒内没有定位到{}元素".format(timeout, locator))
             self.get_windows_img()
 
-    def get_title_contains(self, text, timeout=2) -> WebElement:
+    def get_title_contains(self, text, timeout=5) -> WebElement:
         '''
 
         :param text:
@@ -72,9 +72,10 @@ class BasePage():
     def get_windows_img(self):
         try:
             # 寻找失败时自动截图至指定目录sreenshot，截图名称为调用方法名（测试用例名）+ 时间戳 + png后缀
-            file_name = config.screenshot_dir + sys._getframe(1).f_code.co_name + time.strftime('%Y%m%d%H%M%S',
-                                                                                                time.localtime(
-                                                                                                    time.time())) + ".png"
+            file_name = config.screenshot_dir + time.strftime('%Y%m%d%H%M%S',
+                                                              time.localtime(
+                                                                  time.time())) + ".png" + sys._getframe(
+                1).f_code.co_name
             self.driver.get_screenshot_as_file(file_name)
             logg.info('Had take screenshots and save to folder:output/screenshots')
         except NameError as e:
@@ -94,12 +95,13 @@ class BasePage():
             self.get_windows_img()
 
     def check_van_dialo(self):
-        try: # todo 已知弹框 文本 列表
+        try:  # todo 已知弹框 文本 列表
             dialog_strs = ["本场竞拍已结束，请等待下一场\n确认",
                            "超出剩余可拍票面金额\n",
+                           "您已在本场出价成功，请勿重复出价\n",
                            ]
             webelement = self.driver.find_element_by_xpath('//div[@role="dialog"]')
-            logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0])) # todo bug 弹窗内容 获取
+            logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0]))  # todo bug 弹窗内容 获取
             if webelement.text in dialog_strs:
                 raise DialogException(webelement.text)
             else:
