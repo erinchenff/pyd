@@ -73,11 +73,10 @@ class BasePage():
         try:
             # 寻找失败时自动截图至指定目录sreenshot，截图名称为调用方法名（测试用例名）+ 时间戳 + png后缀
             file_name = config.screenshot_dir + time.strftime('%Y%m%d%H%M%S',
-                                                              time.localtime(
-                                                                  time.time())) + ".png" + sys._getframe(
-                1).f_code.co_name
+                                                              time.localtime(time.time())) + sys._getframe(
+                1).f_code.co_name + ".png"
             self.driver.get_screenshot_as_file(file_name)
-            logg.info('Had take screenshots and save to folder:output/screenshots')
+            logg.info('Had take screenshots and save to folder:output/screenshots： %s' % file_name)
         except NameError as e:
             logg.info('Failed to take the screenshots!%s' % e)
 
@@ -98,9 +97,10 @@ class BasePage():
         try:  # todo 已知弹框 文本 列表
             dialog_strs = ["本场竞拍已结束，请等待下一场\n确认",
                            "超出剩余可拍票面金额\n",
-                           "您已在本场出价成功，请勿重复出价\n",
+                           "您已在本场出价成功，请勿重复出价\n取消\n确认"
                            ]
             webelement = self.driver.find_element_by_xpath('//div[@role="dialog"]')
+            print(webelement.text)
             logg.info("此页面有弹窗,webelement内容为：{}".format(webelement.text.split("\n")[0]))  # todo bug 弹窗内容 获取
             if webelement.text in dialog_strs:
                 raise DialogException(webelement.text)

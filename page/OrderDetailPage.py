@@ -17,6 +17,7 @@ class OrderDetailPage(BasePage):
 
     def gotoOrderDeal(self):
         # 页面显示"立即竞拍"按钮，并按钮名称非空
+
         self.get_text_to_be_present(self._detail_bottombtn_locator, '立即竞拍', cf.auction_interval_time)
         logg.info("立即竞拍 按钮显示")
 
@@ -24,5 +25,9 @@ class OrderDetailPage(BasePage):
             # 无弹窗
             self.click_element(*self._detail_bottombtn_locator)
             logg.info("点击：立即竞拍")
+
+        # 此处需要判断 重复出价,强制睡一秒，此处处理不妥
+        time.sleep(1)
+        if not self.check_van_dialo():
             return OrderDealPage()
 
